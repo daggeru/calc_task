@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  contact:
+    name: Name
+    url: https://www.url.com
+    email: m@il.com
+  version: 0.1.0
+  title: Title
+externalDocs:
+  description: Description
+  url: https://url.com
+servers:
+  - url: /
+    description: Description
+tags:
+  - name: timeseries
+    description: Tameseries
+paths:
+  /health:
+    get:
+      summary: Return healthcheck.
+      operationId: endpoints.healthcheck.health
+      responses:
+        '200':
+          description: Service healthcheck result
+          content:
+            application/health+json:
+              schema:
+                description: Healthcheck endpoint result
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    example: 'pass'
+  /calc_av:
+    post:
+      summary: Parsing data of customers.
+      operationId: endpoints.parse_data.parse_data
+      requestBody:
+        required: true
+        description: List of objects to parse
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  t:
+                    type: integer
+                  v:
+                    type: number
+      responses:
+        '200':
+          $ref: '#/components/responses/200_ok'
+
+components:
+  responses:
+    200_ok:
+      description: OK
+      headers:
+        Content-Type:
+          $ref: '#/components/headers/Content-Type'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              avg:
+                type: number
+              sum:
+                type: integer
+# TODO 400 and 404
+  headers:
+    Content-Type:
+      description: Content-Type header
+      schema:
+        type: string
+        default: 'application/json;charset=UTF-8'

@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  api_service:
+    build:
+      context: ../
+      dockerfile: docker/api_service/Dockerfile
+      args:
+        CALC_SERVICE_URL: 'https://some.url'
+        DYNAMODB_REGION: 'eu-west-1'
+        DYNAMODB_TABLE_NAME: 'customer_data'
+        AWS_DYNAMO_DB_URL: 'https://some.aws.url'
+    ports:
+      - 80:80
+    image: api_service
+
+  calculations_service:
+    build:
+      context: ../
+      dockerfile: docker/calculations_service/Dockerfile
+    ports:
+      - 81:81
+    image: calculations_service
